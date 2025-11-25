@@ -1,0 +1,58 @@
+# ============================================
+# Common Java / Maven / Spring Boot .gitignore
+# ============================================
+
+# Maven target directory
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+
+# Spring Boot specific
+*.log
+*.pid
+*.out
+
+# Maven wrapper logs
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+## IntelliJ IDEA ##
+.idea/
+*.iml
+*.iws
+out/
+
+## Eclipse ##
+.project
+.classpath
+.settings/
+bin/
+
+## VS Code ##
+.vscode/
+
+# OS-specific
+## Windows ##
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## macOS ##
+.DS_Store
+.AppleDouble
+.LSOverride
+__MACOSX/
+
+# Java
+*.class
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo

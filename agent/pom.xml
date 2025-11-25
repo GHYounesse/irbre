@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.irbre</groupId>
+	<artifactId>agent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>IRBRE Java Agent</name>
+	<description>Lightweight Java agent for IRBRE trace capture</description>
+	<properties>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+
+
+
+		<!-- ASM for bytecode manipulation -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-commons</artifactId>
+			<version>9.5</version>
+		</dependency>
+
+		<!-- Jackson for JSON -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.18.0</version>
+		</dependency>
+
+		<!-- Logging -->
+
+
+
+		<!-- Testing -->
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+				<execution>
+				<phase>package</phase>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+				<configuration>
+				<createDependencyReducedPom>false</createDependencyReducedPom>
+				<!-- Shade/relocate dependencies to avoid conflicts -->
+				<relocations>
+					<relocation>
+						<pattern>org.objectweb.asm</pattern>
+						<shadedPattern>com.irbre.shaded.asm</shadedPattern>
+					</relocation>
+					<relocation>
+						<pattern>com.fasterxml.jackson</pattern>
+						<shadedPattern>com.irbre.shaded.jackson</shadedPattern>
+					</relocation>
+				</relocations>
+					<transformers>
+						<!-- Set manifest for Java agent -->
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<manifestEntries>
+								<Premain-Class>com.irbre.agent.IrbreAgent</Premain-Class>
+								<Can-Retransform-Classes>true</Can-Retransform-Classes>
+								<Can-Redefine-Classes>false</Can-Redefine-Classes>
+								<Implementation-Title>IRBRE Agent</Implementation-Title>
+								<Implementation-Version>${project.version}</Implementation-Version>
+							</manifestEntries>
+						</transformer>
+					</transformers>
+				</configuration>
+				</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
